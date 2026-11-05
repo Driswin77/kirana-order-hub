@@ -1,0 +1,114 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// --- ROLES & USERS ---
+enum Role {
+  RETAILER
+  ORDER_DESK
+}
+
+model User {
+  id        String   @id @default(cuid())
+  phone     String   @unique
+  name      String
+  role      Role     @default(RETAILER)
+  retailer  Retailer?
+  createdAt DateTime @default(now())
+}
+
+model Retailer {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id])
+  shopName    String
+  creditLimit Int      @default(50000)
+  creditUsed  Int      @default(0)
+  orders      Order[]
+  aliases     Alias[] // For our Hybrid AI Cache
+}
+
+// --- PRODUCTS & SCHEMES ---
+model SKU {
+  id          String      @id @default(cuid())
+  code        String      @unique
+  name        String
+  dealerPrice Float
+  stockCases  Int
+  gstRate     Float       @default(18)
+  schemes     Scheme[]
+  orderItems  OrderItem[]
+  aliases     Alias[]
+}
+
+enum SchemeType {
+  BUY_X_GET_Y
+  SLAB_DISCOUNT
+}
+
+model Scheme {
+  id          String     @id @default(cuid())
+  skuId       String
+  sku         SKU        @relation(fields: [skuId], references: [id])
+  type        SchemeType
+  buyQty      Int?       // For Buy X Get Y
+  freeQty     Int?       // For Buy X Get Y
+  minQty      Int?       // For Slab Discount
+  discountPct Float?     // For Slab Discount
+}
+
+// --- ORDERS ---
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  ON_HOLD
+  DISPATCHED
+  CANCELLED
+}
+
+enum OrderSource {
+  MANUAL
+  AI_CAPTURE
+}
+
+model Order {
+  id          String      @id @default(cuid())
+  retailerId  String
+  retailer    Retailer    @relation(fields: [retailerId], references: [id])
+  status      OrderStatus @default(PENDING)
+  source      OrderSource @default(MANUAL)
+  aiRawInput  String?     // Stores the exact Hindi/English text if AI captured
+  totalAmount Float
+  items       OrderItem[]
+  createdAt   DateTime    @default(now())
+}
+
+model OrderItem {
+  id          String  @id @default(cuid())
+  orderId     String
+  order       Order   @relation(fields: [orderId], references: [id])
+  skuId       String
+  sku         SKU     @relation(fields: [skuId], references: [id])
+  quantity    Int     // Total cases ordered
+  freeQty     Int     @default(0) // Calculated by our Scheme Engine
+  unitPrice   Float
+  discountPct Float   @default(0)
+}
+
+// --- OUR STANDOUT FEATURE: THE AI ALIAS CACHE ---
+model Alias {
+  id         String   @id @default(cuid())
+  retailerId String
+  retailer   Retailer @relation(fields: [retailerId], references: [id])
+  skuId      String
+  sku        SKU      @relation(fields: [skuId], references: [id])
+  rawText    String   // e.g., "chhota biscuit"
+  createdAt  DateTime @default(now())
+
+  @@unique([retailerId, rawText]) // Prevent duplicate aliases per retailer
+}
