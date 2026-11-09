@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { signIn, getSession } from "next-auth/react"; // Added getSession
+import { signIn, getSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
@@ -37,9 +37,7 @@ export default function LoginPage() {
       setError(res.error);
       setLoading(false);
     } else {
-      // THE FIX: Check the role before routing
       const session = await getSession();
-      
       if ((session?.user as any)?.role === "ORDER_DESK") {
         router.push("/desk");
       } else {
@@ -50,59 +48,76 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
-      <div className="max-w-md w-full bg-white rounded-xl shadow-sm border border-gray-100 p-8">
+    <div className="min-h-screen flex items-center justify-center bg-slate-50 p-4 relative overflow-hidden font-sans">
+      
+      {/* Soft, light-mode background glows (Emerald & Sky) */}
+      <div className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-emerald-100 rounded-full blur-[120px] opacity-60"></div>
+      <div className="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-sky-100 rounded-full blur-[120px] opacity-60"></div>
+      
+      {/* Clean White Card */}
+      <div className="relative z-10 w-full max-w-md bg-white border border-slate-200 rounded-3xl shadow-xl shadow-slate-200/50 p-8 sm:p-10">
         
-        <div className="text-center mb-8">
-          <h1 className="text-2xl font-semibold text-gray-900">Kirana Order Hub</h1>
-          <p className="text-gray-500 text-sm mt-2">
-            {step === 1 ? "Enter your phone number to login" : "Enter the 6-digit OTP"}
+        {/* Logo & Header */}
+        <div className="text-center mb-8 flex flex-col items-center">
+          {/* Increased Logo Size here */}
+          <img 
+            src="/logo.png" 
+            alt="Logo" 
+            className="w-28 h-28 mb-4 object-contain drop-shadow-sm" 
+          />
+          <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">Welcome to Kirana Hub</h1>
+          <p className="text-slate-500 text-sm mt-2 font-medium">
+            {step === 1 ? "Enter your registered phone number" : "Enter the 6-digit OTP sent to you"}
           </p>
         </div>
 
         {error && (
-          <div className="mb-4 p-3 bg-red-50 text-red-600 text-sm rounded-lg border border-red-100 text-center">
+          <div className="mb-6 p-3 bg-red-50 text-red-600 text-sm font-semibold rounded-xl border border-red-100 text-center">
             {error}
           </div>
         )}
 
         {step === 1 ? (
-          <form onSubmit={handleSendOtp} className="space-y-4">
+          <form onSubmit={handleSendOtp} className="space-y-5">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
-              <div className="flex">
-                <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm">
+              <label className="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Phone Number</label>
+              <div className="flex bg-white border border-slate-300 rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-slate-900/10 focus-within:border-slate-900 transition-all shadow-sm">
+                <span className="inline-flex items-center px-4 border-r border-slate-200 text-slate-500 font-semibold bg-slate-50">
                   +91
                 </span>
                 <input
                   type="tel"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  className="flex-1 block w-full rounded-none rounded-r-md border-gray-300 px-3 py-3 border focus:ring-blue-500 focus:border-blue-500 text-gray-900"
-                  placeholder="9876543210"
+                  className="flex-1 w-full bg-transparent px-4 py-3.5 text-slate-900 font-medium placeholder-slate-400 focus:outline-none"
+                  placeholder="98765 43210"
                   maxLength={10}
                 />
               </div>
             </div>
             <button
               type="submit"
-              className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none"
+              className="w-full bg-slate-900 text-white py-3.5 rounded-xl font-bold text-sm hover:bg-slate-800 transition-all shadow-lg shadow-slate-900/20 active:scale-[0.98]"
             >
               Send OTP
             </button>
-            <p className="text-xs text-center text-gray-400 mt-4">
-              Demo Retailer: 9876543210 <br /> Demo Desk: 9999999999
-            </p>
+            
+            <div className="mt-6 pt-6 border-t border-slate-100 text-center">
+              <p className="text-[11px] font-mono text-slate-500">
+                <span className="text-slate-400">Demo Retailer:</span> 9876543210 <br />
+                <span className="text-slate-400">Demo Desk:</span> 9999999999
+              </p>
+            </div>
           </form>
         ) : (
-          <form onSubmit={handleVerifyOtp} className="space-y-4">
+          <form onSubmit={handleVerifyOtp} className="space-y-5">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">OTP (Mock: 123456)</label>
+              <label className="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">OTP (Mock: 123456)</label>
               <input
                 type="text"
                 value={otp}
                 onChange={(e) => setOtp(e.target.value)}
-                className="block w-full rounded-md border-gray-300 px-3 py-3 border focus:ring-blue-500 focus:border-blue-500 text-center text-2xl tracking-widest text-gray-900"
+                className="block w-full bg-white border border-slate-300 rounded-xl px-4 py-4 text-center text-2xl tracking-[0.5em] font-mono text-slate-900 placeholder-slate-300 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all shadow-sm"
                 placeholder="••••••"
                 maxLength={6}
               />
@@ -110,16 +125,16 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none disabled:opacity-50"
+              className="w-full bg-emerald-600 text-white py-3.5 rounded-xl font-bold text-sm hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-600/20 disabled:opacity-50 active:scale-[0.98]"
             >
               {loading ? "Verifying..." : "Verify & Login"}
             </button>
             <button
               type="button"
               onClick={() => setStep(1)}
-              className="w-full text-center text-sm text-gray-500 hover:text-gray-700 mt-2"
+              className="w-full text-center text-xs font-semibold text-slate-400 hover:text-slate-700 transition-colors mt-2"
             >
-              Change Number
+              ← Back to Phone Number
             </button>
           </form>
         )}
