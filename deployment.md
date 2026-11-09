@@ -1,17 +1,16 @@
-# Deployment & Setup Guide: Kirana Order Hub
+Deployment & Setup Guide: Kirana Order Hub
+1. How to run locally (Step-by-step)
+Prerequisites
+Node.js (v18 or higher)
 
-## 1. How to run locally (Step-by-step)
+PostgreSQL Database (A free Neon.tech or Supabase account works perfectly)
 
-### Prerequisites
-*   Node.js (v18 or higher)
-*   PostgreSQL Database (A free Neon.tech or Supabase account works perfectly)
+Installation Steps
+Clone the repository:
 
-### Installation Steps
-
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/Driswin77/kirana-order-hub.git
-   cd kirana-order-hub
+bash
+git clone https://github.com/Driswin77/kirana-order-hub.git
+cd kirana-order-hub
 Install dependencies:
 
 bash
@@ -39,7 +38,7 @@ Open the app:
 Navigate to http://localhost:3000 in your browser.
 
 2. How it is deployed
-Deployment Stack: Vercel (Frontend/API) + Neon/Supabase (Database)
+Deployment Stack: Vercel (Frontend/API) + Neon (Database)
 
 Environment Variables needed in production:
 (Names only, never commit values to the repository)
@@ -75,7 +74,7 @@ OTP: 123456
 
 Role: Retailer
 
-Features to test: Add items to cart, check the scheme engine (add 10 biscuits to see 1 free), use the "✨ AI Order" feature to paste a Hindi/English message.
+Features to test: Add items to cart, check the scheme engine (add 10 biscuits to see 1 free), use the "AI Capture" feature to paste a Hindi/English message.
 
 Order Desk Account (To manage orders)
 Phone Number: 9999999999
@@ -92,11 +91,3 @@ No secrets or real personal data are committed to the repository.
 The .env file is strictly ignored in .gitignore.
 
 The app uses a mock OTP system to bypass SMS gateway costs for the review process.
-
-text
-
-Once you have this saved, you now have both required files for your ZIP:
-1. `deployment.md`
-2. Your TDD (saved as a PDF or Word doc).
-
-You are ready to package and submit!
