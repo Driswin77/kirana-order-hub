@@ -9,6 +9,9 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Kirana Order Hub",
   description: "FMCG Ordering App",
+  icons: {
+    icon: "/logo.png",
+  },
 };
 
 export default function RootLayout({
