@@ -22,11 +22,10 @@ export default async function CataloguePage() {
           
           {/* Left Side: Logo & Store Name */}
           <div className="flex items-center gap-3">
-            <img 
-              src="/logo.png" 
-              alt="Logo" 
-              className="w-16 h-16 object-contain drop-shadow-sm" 
-            />
+            {/* CSS LOGO - GUARANTEED TO WORK ON VERCEL */}
+            <div className="w-12 h-12 bg-gradient-to-tr from-slate-900 to-slate-700 rounded-xl flex items-center justify-center text-white font-extrabold text-2xl shadow-md border border-slate-600">
+              K
+            </div>
             <div>
               <h1 className="text-xl font-extrabold text-slate-900 tracking-tight leading-none mb-1">Catalogue</h1>
               <p className="text-xs font-semibold text-slate-500">Gupta Kirana Store</p>
@@ -35,7 +34,6 @@ export default async function CataloguePage() {
 
           {/* Right Side: Actions & Profile */}
           <div className="flex items-center gap-3 md:gap-5">
-            {/* ✨ REMOVED FROM HERE */}
             <Link href="/ai-order" className="text-sm font-bold text-indigo-700 bg-indigo-50 border border-indigo-100 px-4 py-2 rounded-full hover:bg-indigo-100 transition-all flex items-center shadow-sm">
                AI Capture
             </Link>
