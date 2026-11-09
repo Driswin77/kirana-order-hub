@@ -23,9 +23,11 @@ export default async function CataloguePage() {
           {/* Left Side: Logo & Store Name */}
           <div className="flex items-center gap-3">
             {/* CSS LOGO - GUARANTEED TO WORK ON VERCEL */}
-            <div className="w-12 h-12 bg-gradient-to-tr from-slate-900 to-slate-700 rounded-xl flex items-center justify-center text-white font-extrabold text-2xl shadow-md border border-slate-600">
-              K
-            </div>
+                        <img 
+              src="/logo.png" 
+              alt="Logo" 
+              className="w-12 h-12 object-contain drop-shadow-sm" 
+            />
             <div>
               <h1 className="text-xl font-extrabold text-slate-900 tracking-tight leading-none mb-1">Catalogue</h1>
               <p className="text-xs font-semibold text-slate-500">Gupta Kirana Store</p>

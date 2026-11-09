@@ -60,9 +60,11 @@ export default function LoginPage() {
         {/* Logo & Header */}
         <div className="text-center mb-8 flex flex-col items-center">
           {/* CSS LOGO - GUARANTEED TO WORK ON VERCEL */}
-          <div className="w-20 h-20 bg-gradient-to-tr from-slate-900 to-slate-700 rounded-2xl flex items-center justify-center text-white font-extrabold text-4xl shadow-lg border border-slate-600 mb-4">
-            K
-          </div>
+                    <img 
+            src="/logo.png" 
+            alt="Logo" 
+            className="w-24 h-24 mb-4 object-contain drop-shadow-sm" 
+          />
           <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">Welcome to Kirana Hub</h1>
           <p className="text-slate-500 text-sm mt-2 font-medium">
             {step === 1 ? "Enter your registered phone number" : "Enter the 6-digit OTP sent to you"}
